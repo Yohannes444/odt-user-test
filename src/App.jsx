@@ -3,38 +3,9 @@ import { useGeolocated } from 'react-geolocated';
 import io from 'socket.io-client';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Container, Typography, Paper } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-
-// Define custom styles using Material UI
-const useStyles = makeStyles((theme) => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-    width: '100%',
-    [theme.breakpoints.down('sm')]: {
-      height: 'calc(100vh - 64px)', // Adjust height on smaller screens if needed
-    },
-  },
-  mapContainer: {
-    flex: 1,
-    position: 'relative',
-  },
-  map: {
-    height: '100%',
-    width: '100%',
-  },
-  header: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
-  },
-}));
+import { Container, Typography, Paper, Box } from '@mui/material';
 
 const App = () => {
-  const classes = useStyles();
   const [socket, setSocket] = useState(null);
   const [connected, setConnected] = useState(false);
   const [map, setMap] = useState(null);
@@ -116,13 +87,13 @@ const App = () => {
   }, [coords, map]);
 
   return (
-    <Container className={classes.container}>
-      <Paper className={classes.header}>
+    <Container sx={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100%' }}>
+      <Paper sx={{ padding: 2, textAlign: 'center', backgroundColor: 'primary.main', color: 'primary.contrastText' }}>
         <Typography variant="h4">Your Location</Typography>
       </Paper>
-      <div className={classes.mapContainer}>
-        <div ref={mapRef} className={classes.map}></div>
-      </div>
+      <Box sx={{ flex: 1, position: 'relative' }}>
+        <div ref={mapRef} style={{ height: '100%', width: '100%' }}></div>
+      </Box>
       <main>
         {!isGeolocationAvailable ? (
           <div>Your browser does not support Geolocation</div>
