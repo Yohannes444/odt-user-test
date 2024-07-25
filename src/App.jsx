@@ -1,11 +1,11 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGeolocated } from 'react-geolocated';
 import io from 'socket.io-client';
 import './App.css';
 
 const App = () => {
   const [socket, setSocket] = useState(null);
+  const [connected, setConnected] = useState(false);
 
   const {
     coords,
@@ -22,21 +22,41 @@ const App = () => {
     const newSocket = io('https://odt.onrender.com', {
       transports: ['websocket'],
       autoConnect: false,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
     });
+
+    newSocket.on('connect', () => {
+      console.log('Connected to server');
+      setConnected(true);
+    });
+
+    newSocket.on('disconnect', (reason) => {
+      console.log('Disconnected from server:', reason);
+      setConnected(false);
+    });
+
+    newSocket.on('connect_error', (error) => {
+      console.error('Connection error:', error);
+      setConnected(false);
+    });
+
     newSocket.connect();
     setSocket(newSocket);
 
-    return () => newSocket.close();
-  }, [setSocket]);
+    return () => {
+      newSocket.close();
+    };
+  }, []);
 
   useEffect(() => {
-    if (coords && socket) {
+    if (coords && socket && connected) {
       socket.emit('sendLocation', {
         latitude: coords.latitude,
         longitude: coords.longitude,
       });
     }
-  }, [coords, socket]);
+  }, [coords, socket, connected]);
 
   return (
     <div className="App">
