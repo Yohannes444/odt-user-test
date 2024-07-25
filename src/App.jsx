@@ -19,12 +19,13 @@ const App = () => {
   });
 
   useEffect(() => {
-    const newSocket = io('https://odt.onrender.com', {
+    const newSocket = io('https://testonly-thqr.onrender.com', {
       transports: ['websocket'],
       autoConnect: false,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
     });
+    
 
     newSocket.on('connect', () => {
       console.log('Connected to server');
