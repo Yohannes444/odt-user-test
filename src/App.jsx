@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Container, Typography, Paper, Box } from '@mui/material';
-import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled';
+import PersonIcon from '@mui/icons-material/Person';
 
 const App = () => {
   const [socket, setSocket] = useState(null);
@@ -77,13 +77,13 @@ const App = () => {
     }
 
     if (coords && map) {
-      // Create a custom Leaflet icon using DirectionsCarFilledIcon SVG
-      const carIcon = L.divIcon({
+      // Create a custom Leaflet icon using PersonIcon SVG
+      const personIcon = L.divIcon({
         html: `
           <div style="font-size: 24px; color: black;">
             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
               <path d="M0 0h24v24H0z" fill="none"/>
-              <path d="M18.92 5.01C18.72 4.42 18.16 4 17.53 4H6.47c-.63 0-1.19.42-1.39 1.01L3 10v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-4.99zM6.85 6h10.29l1.04 2.5H5.81L6.85 6zM19 16H5v-5h14v5zM7 18c-.83 0-1.5-.67-1.5-1.5S6.17 15 7 15s1.5.67 1.5 1.5S7.83 18 7 18zm10 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5S17.83 18 17 18z" fill="black"/>
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
             </svg>
           </div>`,
         className: '',
@@ -93,9 +93,9 @@ const App = () => {
 
       if (marker) {
         marker.setLatLng([coords.latitude, coords.longitude]);
-        marker.setIcon(carIcon);
+        marker.setIcon(personIcon);
       } else {
-        const newMarker = L.marker([coords.latitude, coords.longitude], { icon: carIcon }).addTo(map);
+        const newMarker = L.marker([coords.latitude, coords.longitude], { icon: personIcon }).addTo(map);
         setMarker(newMarker);
       }
       map.setView([coords.latitude, coords.longitude], 13);
